@@ -27,8 +27,14 @@ public class LoginServiceImpl implements  ILoginService{
             return  null;
         }
         System.out.println("Aaaaa");
-        UserVO user=
-                new UserVO(member.getMemId(),member.getMemName(),member.getMemPass(),"MEMBER");
-        return user;
+
+        // 보통은 권한 테이블 따로 존재하는데.. 그렇게 하려면 우리가 테이블 만들고 이것저것 해야되니까
+        if(member.getMemId().equals("a001")){
+            UserVO user= new UserVO(member.getMemId(),member.getMemName(),member.getMemPass(),"MANAGER");
+            return user;
+        }else {
+            UserVO user= new UserVO(member.getMemId(),member.getMemName(),member.getMemPass(),"MEMBER");
+            return user;
+        }
     }
 }

@@ -24,4 +24,13 @@
                                 expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <!--<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/member/*"/>
+            <bean id="managerCheck" class="com.study.common.interceptor.ManagerCheckInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+-->
+
+
 </beans>

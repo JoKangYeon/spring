@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.reply.dao.IReplyDao">
+    <select id="getReplyCountByParent" resultType="java.lang.Integer">
+        SELECT count(*) FROM reply
+        WHERE re_parent_no = #{reParentNo}
+        AND re_category = #{reCategory}
+    </select>
+    <select id="getReplyListByParent" resultType="com.study.reply.vo.ReplyVO">
+        SELECT * FROM
+            ( SELECT a.*, rownum AS rnum FROM (
+        SELECT
+            re_no, re_category, re_parent_no,
+            re_mem_id,  re_content, re_ip,
+            re_reg_date,    re_mod_date,
+            b.mem_name AS re_mem_name
+        FROM
+            reply a, member b
+        WHERE a.re_mem_id = b.mem_id
+          AND a.re_parent_no = #{reParentNo}
+          AND a.re_category=#{reCategory}
+        ORDER BY a.re_no desc
+          ) a  ) b
+        WHERE rnum between #{paging.firstRow} and #{paging.lastRow}
+    </select>
+
+    <insert id="insertReply" parameterType="com.study.reply.vo.ReplyVO">
+        INSERT INTO reply (
+            re_no,              re_category,            re_parent_no,
+            re_mem_id,          re_content,             re_ip,
+            re_reg_date,        re_mod_date
+        ) VALUES (
+            SEQ_REPLY.nextval, #{reCategory},       #{reParentNo},
+            #{reMemId},        #{reContent},        #{reIp},
+            sysdate,           null
+        )
+    </insert>
+
+    <select id="getReply" resultType="com.study.reply.vo.ReplyVO">
+
+    </select>
+
+    <update id="updateReply" parameterType="com.study.reply.vo.ReplyVO">
+        UPDATE reply
+        SET re_content = #{reContent}
+        WHERE re_no = #{reNo}
+    </update>
+
+    <delete id="deleteReply"></delete>
+
+
+
+
+
+</mapper>

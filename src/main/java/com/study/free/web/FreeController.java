@@ -16,10 +16,7 @@ import com.study.free.vo.FreeBoardVO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
@@ -95,7 +92,7 @@ public class FreeController {
         } catch (BizPasswordNotMatchedException bnf) {
             ResultMessageVO resultMessageVO = new ResultMessageVO();
             resultMessageVO.messageSetting
-                    (true, "free modify 수", "실패", "/free/freeList.wow", "목록으로");
+                    (true, "free modify 수정", "실패", "/free/freeList.wow", "목록으로");
             model.addAttribute("resultMessageVO", resultMessageVO);
             return "common/message";
         }
@@ -135,7 +132,5 @@ public class FreeController {
         model.addAttribute("resultMessageVO",resultMessageVO);
         return "common/message";
     }
-
-
 
 }
