@@ -374,9 +374,7 @@
                     data: {"reNo" : thisReNo, "reMemId" : '${USER_INFO.userId}'},
                     success: function () {
                         let parentReplyTag = $("#id_reply_list_area")
-                        parentReplyTag.html("");
-                        param.curPage = 1;
-                        replyList();
+                        $(thisRow).remove()
                     }
                 })
 
