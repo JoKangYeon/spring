@@ -1,5 +1,7 @@
 package com.study.free.service;
 
+import com.study.common.attach.dao.IAttachDao;
+import com.study.common.attach.vo.AttachVO;
 import com.study.common.vo.PagingVO;
 import com.study.exception.BizNotFoundException;
 import com.study.exception.BizPasswordNotMatchedException;
@@ -19,6 +21,9 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
     @Inject
     IFreeBoardDao freeBoardDao;
 
+    @Inject
+    IAttachDao attachDao;
+
     @Override
     public List<FreeBoardVO> getBoardList(PagingVO paging, FreeBoardSearchVO search) {
 
@@ -36,7 +41,11 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
         if (freeBoard == null) {
             throw new BizNotFoundException();
         }
+        // 내 현재 글번호에 맞는 attach들을 찾아서 setAttaches하면 끝
+        List<AttachVO> attaches = attachDao.getAttaches("FREE", freeBoard.getBoNo());
+        freeBoard.setAttaches(attaches);
         return freeBoard;
+
     }
 
 
@@ -51,6 +60,15 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
         } else {
             throw new BizPasswordNotMatchedException("비밀번호 틀림. 사용자가 아님");
         }
+        List<AttachVO> attaches = freeBoard.getAttaches();
+        if(attaches != null){
+            for (AttachVO attach : attaches){
+                attach.setAtchParentNo(freeBoard.getBoNo());
+                attachDao.insertAttach(attach);
+            }
+        }
+
+
     }
 
 
@@ -65,11 +83,21 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
         }
     }
 
-
     @Override
-    public void registBoard(FreeBoardVO freeBoard) {
+    public void registBoard(FreeBoardVO freeBoard) {    //boNo=0
 
-        freeBoardDao.insertBoard(freeBoard);
+        freeBoardDao.insertBoard(freeBoard);    //boNo=0, seq로 넣은 값을 boNo에 세팅해줄 수 없을까?
+        //selectKey     insertBoard 하고나면 boNo=0이 아님
+
+        List<AttachVO> attaches = freeBoard.getAttaches();
+        if(attaches != null){
+            for (AttachVO attach : attaches){
+                attach.setAtchParentNo(freeBoard.getBoNo());
+                attachDao.insertAttach(attach);
+            }
+        }
+
+
     }
 
 

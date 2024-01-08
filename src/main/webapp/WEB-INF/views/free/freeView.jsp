@@ -62,6 +62,17 @@
             <td>${freeBoard.boDelYn}</td>
         </tr>
         <tr>
+            <th>첨부파일</th>
+            <td>
+                <c:forEach var="f" items="${freeBoard.attaches}" varStatus="st">
+                    <div> 파일 ${st.count} <a href="<c:url value='/attach/download/${f.atchNo}' />" target="_blank">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> ${f.atchOriginalName}
+                    </a> Size : ${f.atchFancySize} Down : ${f.atchDownHit}
+                    </div>
+                </c:forEach>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <div class="pull-left">
                     <a href="freeList.wow" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list"
@@ -88,24 +99,19 @@
                   method="post" onclick="return false;">
                 <input type="hidden" name="reParentNo" value="${freeBoard.boNo}">
                 <input type="hidden" name="reCategory" value="FREE">
-                <input type="hidden" name="reMemId" value="${USER_INFO.userId }">
+                <input type="hidden" name="reMemId" value="${USER_INFO.userId}">
                 <input type="hidden" name="reMemName" value="${USER_INFO.userName }">
                 <input type="hidden" name="reIp"
                        value="<%=request.getRemoteAddr()%>">
                 <div class="form-group">
                     <label class="col-sm-2  control-label">댓글</label>
 
-                    <c:if test="${USER_INFO == null}">
                         <div class="col-sm-8">
                                 <textarea rows="3" name="reContent" class="form-control"
-                                          readonly='readonly'></textarea>
+                                ${USER_INFO.userId eq "" ? "readonly='readonly'" : ""}></textarea>
                         </div>
-                    </c:if>
-                    <c:if test="${USER_INFO != null}">
-                        <div class="col-sm-8">
-                                <textarea rows="3" name="reContent" class="form-control"></textarea>
-                        </div>
-                    </c:if>
+
+
 
                     <div class="col-sm-2">
                         <button id="btn_reply_regist" type="button"
@@ -197,6 +203,10 @@
     // paging, reCategory, reParentNo
     let param = {"curPage": 1, "reCategory": "FREE", "reParentNo": ${freeBoard.boNo}}
 
+
+
+
+
     function replyList() {
         $.ajax({
             url: "/reply/replyList",
@@ -211,7 +221,7 @@
                         '</div>' +
                         '<div class="col-sm-2">' + reply.reRegDate + '</div>' +
                         '<div class="col-sm-2">';
-                    if (reply.reMemId == '${USER_INFO.userId}') {
+                    if (reply.reMemId === '${USER_INFO.userId}') {
                         str += '<button name="btn_reply_edit" type="button"'
                             + 'class=" btn btn-sm btn-info" onClick="fn_modify()">수정</button>'
                             + '<button name="btn_reply_delete" type="button"'
@@ -226,14 +236,18 @@
 
 
 
-    <%--if(${USER_INFO} != null){--%>
-    <%--    $(input[name="reContent"]).attr("readonly", false);--%>
 
-    <%--}--%>
 
 
     $(document).ready(function (e) {
+        <%--if('${USER_INFO.userId}' != ''){--%>
+        <%--    let formTag = $("form[name='frm_reply']");--%>
+        <%--    // formTag.find($("input[name='reContent']").attr("readonly", false));--%>
+        <%--    formTag.find($("input[name='reContent']")).readOnly = false;--%>
+        <%--}--%>
+
         replyList();
+
         //더보기 버튼
         $("#id_reply_list_more").on("click", function (e) {
             //fn_reply_list에서 마지막에 curPage=2로 바꿔줍니다.
@@ -277,28 +291,59 @@
         //수정버튼 : 댓글 영역안에 있는 수정버튼만  이벤트 등록
         $("#id_reply_list_area").on("click", 'button[name="btn_reply_edit"]'
             , function (e) {
-                //현재 버튼의 상위 div(한개 댓글) 찾기
+                e.preventDefault();
 
+                //현재 버튼의 상위 div(한개 댓글) 찾기
+                // console.log("this.parent : ", $(this).parent().parent())
+
+                // 현재 row
+                let thisRow = $(this).closest(".row");
+                console.log(thisRow)
 
                 //div에서 현재 댓글 내용을 modal에 있는 textarea에 복사
-
-
-
-
-
-
+                let thisContent = $(this).closest(".row").find("pre").text();
+                $("#id_reply_edit_modal").find(".modal-body").find("textarea").val(thisContent);
 
                 //div태그의 data-re-no 값을 modal에 있는 input name="reNo" 태그의 value값에 복사
+                let thisReNo = thisRow.data('re-no');
+                $("#id_reply_edit_modal").find(".modal-body").find("input[name='reNo']").val(thisReNo);
+                // console.log(thisReNo)
+
                 //복사 후   .modal('show')
+                $("#id_reply_edit_modal").modal('show');
+
             });//수정버튼
 
 
         //모달창 저장 버튼
         $("#btn_reply_modify").on("click", function (e) {
             //가장 가까운form 찾기 , ajax 호출(  data:form.serialzie()
-            // 성공 :  modal찾은 후 modal('hide')
-            // 현재 모달에 있는 reNo, reContent 찾기
-            // 댓글영역에서 re_no에 해당하는 댓글 찾은 후 안의 내용 re_content로 변경
+            console.log(this.closest("form[name='frm_reply_edit']"));
+            let thisForm = this.closest("form[name='frm_reply_edit']")
+            $.ajax({
+                url : "/reply/replyModify",
+                data : $(thisForm).serialize(),
+                // 성공 :  modal찾은 후 modal('hide')
+                success : function (reply) {
+                    $("#id_reply_edit_modal").modal('hide');
+
+                    // 현재 모달에 있는 reNo, reContent 찾기
+                    // let thisRow = $(this).closest(".modal-body").find("input[name='reNo']");
+                    let thisRow = $(".modal-body input[name='reNo']")
+                    // let thisContent = $(this).closest(".modal-body").find("textarea[name='reContent']");
+                    let thisContent = $(".modal-body textarea[name='reContent']")
+                    console.log(thisRow.val(), thisContent.val())
+
+                    // 댓글영역에서 re_no에 해당하는 댓글 찾은 후 안의 내용 re_content로 변경
+                    $(".row").find("input[name='reNo']").val(thisContent)
+
+                    let parentReplyTag = $("#id_reply_list_area")
+                    parentReplyTag.html("");
+                    param.curPage = 1;
+                    replyList();
+                }
+            })
+
         });//모달창 저장버튼
 
 
@@ -306,7 +351,35 @@
         $("#id_reply_list_area").on("click", 'button[name="btn_reply_delete"]'
             , function (e) {
                 //가장 가까운 div 찾기,
+                $(this.closest("div"));
+                console.log($(this.closest("div")));
+
                 //reNo,  reMemId(현재 로그인 한 사람의 id) 구하기
+
+                let thisRow = $(this).closest(".row");
+                console.log(thisRow)
+
+
+                let thisContent = $(this).closest(".row").find("pre").text();
+                $("#id_reply_edit_modal").find(".modal-body").find("textarea").val(thisContent);
+
+
+                let thisReNo = thisRow.data('re-no');
+                $("#id_reply_edit_modal").find(".modal-body").find("input[name='reNo']").val(thisReNo);
+
+
+
+                $.ajax({
+                    url : "/reply/replyDelete",
+                    data: {"reNo" : thisReNo, "reMemId" : '${USER_INFO.userId}'},
+                    success: function () {
+                        let parentReplyTag = $("#id_reply_list_area")
+                        parentReplyTag.html("");
+                        param.curPage = 1;
+                        replyList();
+                    }
+                })
+
                 // ajax 호출(reNo, reMemeId보내기) reMemId는 본인이 쓴 글인지 확인하는데 쓰임 (BizAccessFailException)
                 //성공  후 해당 div.remove
             }); //삭제버튼
@@ -318,9 +391,4 @@
 
 
 </html>
-
-
-
-
-
 

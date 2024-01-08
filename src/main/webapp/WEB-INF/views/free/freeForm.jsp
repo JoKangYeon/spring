@@ -13,7 +13,7 @@
 	<div class="page-header">
 		<h3>자유게시판 - <small>글 등록</small></h3>
 	</div>
-	<form action="freeRegist.wow" method="post">	
+	<form action="freeRegist.wow" method="post" enctype="multipart/form-data">
 	<table class="table table-striped table-bordered">
 		<colgroup>
 			<col width="20%" />
@@ -53,6 +53,18 @@
 			<th>내용</th>
 			<td><textarea rows="10" name="boContent" class="form-control"></textarea>
 			</td>
+
+		</tr>
+		<tr>
+			<th>첨부파일
+				<button type="button" id="id_btn_new_file">추가</button>
+			</th>
+			<td class="file_area">
+				<div class="form-inline">
+					<input type="file" name="boFiles" class="form-control">
+					<button type="button" class="btn_delete btn btn-sm">삭제</button>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -75,6 +87,17 @@
 	
 </div><!-- container -->
 </body>
+<script>
+	$('#id_btn_new_file').click(function(){
+		$('.file_area').append('<div class="form-inline">'
+				+ '<input type="file" name="boFiles" class="form-control">'
+				+ ' <button type="button" class="btn_delete btn btn-sm">삭제</button>' + '</div>');
+	});
+
+	$('.file_area').on('click','.btn_delete', function(){
+		$(this).closest('div').remove();
+	});
+</script>
 </html>
 
 

@@ -27,12 +27,12 @@ public class ReplyServiceImpl implements IReplyService {
 
     @Override
     public void modifyReply(ReplyVO reply) throws BizNotFoundException, BizAccessFailException {
-
+        replyDao.updateReply(reply);
     }
 
     @Override
     public void removeReply(ReplyVO reply) throws BizNotFoundException, BizAccessFailException {
-
+        replyDao.deleteReply(reply);
     }
 
     @Override

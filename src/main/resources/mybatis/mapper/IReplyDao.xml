@@ -37,7 +37,8 @@
     </insert>
 
     <select id="getReply" resultType="com.study.reply.vo.ReplyVO">
-
+        SELECT reNo
+        FROM reply
     </select>
 
     <update id="updateReply" parameterType="com.study.reply.vo.ReplyVO">
@@ -46,7 +47,12 @@
         WHERE re_no = #{reNo}
     </update>
 
-    <delete id="deleteReply"></delete>
+    <delete id="deleteReply" parameterType="com.study.reply.vo.ReplyVO">
+        DELETE FROM reply
+        WHERE
+            re_no = ${reNo}
+            AND re_mem_id = #{reMemId}
+    </delete>
 
 
 

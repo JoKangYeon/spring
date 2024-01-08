@@ -50,12 +50,17 @@
       <param-value>/WEB-INF/classes/spring/dispatcher-servlet.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+    <multipart-config>
+      <max-file-size>31457280</max-file-size>   30mb
+      <max-request-size>1004857600</max-request-size> 100mb
+    </multipart-config>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>appServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
 
   <!-- / , /* 차이 :   / 남은 모든거,  /* 그냥 모든 거-->
 
