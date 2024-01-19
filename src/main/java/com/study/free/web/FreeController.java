@@ -85,7 +85,8 @@ public class FreeController {
     }
 
     @PostMapping("free/freeModify.wow")
-    public String freeModify(Model model, FreeBoardVO freeBoard,  @RequestParam(name = "boFiles", required = false) MultipartFile[] boFiles)
+    public String freeModify(Model model, FreeBoardVO freeBoard, //삭제할 파일 번호들이 배열로 세팅됨 delAtchNos
+                             @RequestParam(name = "boFiles", required = false) MultipartFile[] boFiles)
             throws IOException {
         if(boFiles != null){
 //            System.out.println(boFiles[0].getSize());

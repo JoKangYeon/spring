@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.excel.dao.IExcelDao">
+    <select id="getFreeList" resultType="com.study.free.vo.FreeBoardVO">
+        SELECT
+        bo_no          , bo_title      , bo_category          ,
+        bo_writer      , bo_pass       , bo_content           ,
+        bo_hit         ,
+
+        to_char(bo_reg_date, 'YYYY-MM-DD') AS bo_reg_date     ,
+        to_char(bo_mod_date, 'YYYY-MM-DD') AS bo_mod_date     ,
+
+        b.comm_nm  AS bo_category_nm                          ,
+        bo_del_yn
+        FROM
+        free_board a, comm_code b
+        WHERE bo_del_yn='N'
+        AND a.bo_category=b.comm_cd
+        ORDER BY bo_no desc
+    </select>
+    <select id="getMemberList" resultType="com.study.member.vo.MemberVO">
+        SELECT
+        mem_id                                   ,mem_pass  , mem_name
+        , TO_CHAR(mem_bir, 'YYYY-MM-DD') AS mem_bir, mem_zip  , mem_add1
+        , mem_add2                                 , mem_hp   , mem_mail
+        , mem_job                                  , mem_hobby, mem_mileage
+        , b.comm_nm AS mem_job_nm
+        , c.comm_nm AS mem_hobby_nm
+        , mem_del_yn
+        FROM
+        member a, comm_code b, comm_code c
+        WHERE mem_del_yn = 'N'
+        AND a.mem_job=b.comm_cd
+        AND a.mem_hobby= c.comm_cd
+        ORDER BY mem_id DESC
+    </select>
+</mapper>

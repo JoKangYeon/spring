@@ -69,6 +69,9 @@
                         <span class="glyphicon glyphicon-save" aria-hidden="true"></span> ${f.atchOriginalName}
                     </a> Size : ${f.atchFancySize} Down : ${f.atchDownHit}
                     </div>
+
+                    <img alt="" src="<%=request.getContextPath()%>/attach/showImg.wow?fileName=${f.atchFileName}&filePath=${f.atchPath}" width="50px" height="50px">
+
                 </c:forEach>
             </td>
         </tr>
@@ -150,6 +153,7 @@
             <div class="col-sm-2">11/25 12:45</div>
             <div class="col-sm-2"></div>
         </div>
+        <div data-page="1"></div>
     </div>
 
     <div class="row text-center" id="id_reply_list_more">
@@ -232,6 +236,15 @@
                 $("#id_reply_list_area").append(str)
             }
         })//ajax
+    }
+
+    function replyListLoad(){
+        let page = param.curPage;
+        let $replyDiv = $("#id_reply_list_area").find("div[data-page='"+ page +"']");
+        $replyDiv.load("/free/replyList", param);
+        param.curPage += 1;
+        $("#id_reply_list_area").append("<div data-page=" + param.curPage +" >")
+
     }
 
 

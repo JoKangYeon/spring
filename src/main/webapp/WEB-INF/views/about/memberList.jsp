@@ -18,7 +18,7 @@
     <%@ include file="/WEB-INF/inc/header.jsp" %>
 </head>
 <body>
-<%@include file="/WEB-INF/inc/top.jsp" %>
+
 
 
 
@@ -78,11 +78,6 @@
         </div>
     </div>
     <!-- END : 검색 폼  -->
-
-    <a href="/excel/memberList" target="_blank" id="excelDown">
-        <button class="btn-info">엑셀다운</button>
-    </a>
-
     <!-- START : 목록건수 및 새글쓰기 버튼  -->
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-sm-3 form-inline">

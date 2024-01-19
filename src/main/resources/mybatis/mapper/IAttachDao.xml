@@ -35,4 +35,34 @@
         AND
             atch_parent_no = #{atchParentNo}
     </select>
+
+    <delete id="deleteAttaches">
+        DELETE FROM attach
+        WHERE atch_no
+        IN (
+        <foreach collection="delAtchNos" item="item" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="getAttach" resultType="com.study.common.attach.vo.AttachVO" parameterType="com.study.common.attach.vo.AttachVO">
+        SELECT
+            atch_no,
+            atch_parent_no,
+            atch_category,
+            atch_file_name,
+            atch_original_name,
+            atch_file_size,
+            atch_fancy_size,
+            atch_content_type,
+            atch_path,
+            atch_down_hit,
+            atch_del_yn,
+            atch_reg_date
+        FROM
+            attach
+        WHERE
+            atch_no=#{atchNo}
+    </select>
+
 </mapper>

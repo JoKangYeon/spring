@@ -68,6 +68,14 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
             }
         }
 
+        // 삭제할 파일들 삭제  freeboard delAtchNos를 가지고
+        int[] delAtchNos = freeBoard.getDelAtchNos();
+        if(delAtchNos != null){
+//            for(int delNum : delAtchNos) {attachDao.deleteAttch(delNum);}
+            attachDao.deleteAttaches(delAtchNos);
+        }
+
+
 
     }
 
@@ -89,6 +97,7 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
         freeBoardDao.insertBoard(freeBoard);    //boNo=0, seq로 넣은 값을 boNo에 세팅해줄 수 없을까?
         //selectKey     insertBoard 하고나면 boNo=0이 아님
 
+        // 추가된 파일들 insert
         List<AttachVO> attaches = freeBoard.getAttaches();
         if(attaches != null){
             for (AttachVO attach : attaches){
@@ -97,8 +106,6 @@ public class FreeBoardServiceImpl implements IFreeBoardService {
             }
         }
 
-
     }
-
 
 }

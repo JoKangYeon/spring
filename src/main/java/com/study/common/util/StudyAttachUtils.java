@@ -25,7 +25,9 @@ public class StudyAttachUtils {
 		List<AttachVO> attachList = new ArrayList<>();
 		for(MultipartFile multipartFile : multipartFiles){
 			AttachVO attach = getAttachByMultipart(multipartFile, category, path);
-			attachList.add(attach);
+			if(attach!= null) {
+				attachList.add(attach);
+			}
 		}
 		return attachList;
 	}

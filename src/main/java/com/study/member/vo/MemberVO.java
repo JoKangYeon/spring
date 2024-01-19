@@ -1,11 +1,14 @@
 package com.study.member.vo;
 
+import com.study.excel.ExcelCoumn;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class MemberVO {
+    @ExcelCoumn(columnName = "회원 아이디")
     private String memId;        /* 회원아이디 */
     private String memPass;      /* 회원비밀번호 */
+    @ExcelCoumn(columnName = "회원 이름")
     private String memName;      /* 회원이름 */
     private String memBir;       /* 회원생년월일 */
     private String memZip;       /* 회원우편번호 */
@@ -13,7 +16,9 @@ public class MemberVO {
     private String memAdd2;      /* 회원상세주소 */
     private String memHp;        /* 회원전화번호 */
     private String memMail;      /* 회원이메일 */
+    @ExcelCoumn(columnName = "회원 직업")
     private String memJob;       /* 회원직업 */
+    @ExcelCoumn(columnName = "회원 취미")
     private String memHobby;     /* 회원취미 */
     private int memMileage;      /* 회원마일리지 */
     private String memDelYn;     /* 회원삭제여부 */

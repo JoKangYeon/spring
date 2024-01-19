@@ -1,0 +1,13 @@
+jquery의 로드. (댓글에서 활용했으면 좀 더 편했을 수도 있는 기능 )
+
+$("선택자".load(  "url", function(){}  );
+url 결과를 "선택자"태그에 ㅔ팅. function()은 url 호출 후 세팅전에 실행
+
+$("a"). load("url1") -> url1의 결과가 이동
+<a> 이동 </a>
+
+$.ajax({
+    url : "url1"
+    ,success : function(data){ $("a").text(data) }
+
+})

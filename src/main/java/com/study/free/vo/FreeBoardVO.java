@@ -1,15 +1,20 @@
 package com.study.free.vo;
 
 import com.study.common.attach.vo.AttachVO;
+import com.study.excel.ExcelCoumn;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
 public class FreeBoardVO {
+    @ExcelCoumn(columnName = "글 번호")
     private int boNo;                       /* 글 번호 */
+    @ExcelCoumn(columnName = "글 제목")
     private String boTitle;                 /* 글 제목 */
+    @ExcelCoumn(columnName = "글 분류")
     private String boCategory;              /* 글 분류 코드 */
+    @ExcelCoumn(columnName = "글 작성자")
     private String boWriter;                /* 작성자명 */
     private String boPass;                  /* 비밀번호 */
     private String boContent;               /* 글 내용 */
@@ -20,14 +25,7 @@ public class FreeBoardVO {
 
     private  String boCategoryNm;           /*글분류 이름 ,get/set만들어라 */
     private List<AttachVO> attaches;
-
-    public List<AttachVO> getAttaches() {
-        return attaches;
-    }
-
-    public void setAttaches(List<AttachVO> attaches) {
-        this.attaches = attaches;
-    }
+    private int[] delAtchNos;
 
     @Override
     public String toString() {
@@ -122,5 +120,21 @@ public class FreeBoardVO {
 
     public void setBoCategoryNm(String boCategoryNm) {
         this.boCategoryNm = boCategoryNm;
+    }
+
+    public int[] getDelAtchNos() {
+        return delAtchNos;
+    }
+
+    public void setDelAtchNos(int[] delAtchNos) {
+        this.delAtchNos = delAtchNos;
+    }
+
+    public List<AttachVO> getAttaches() {
+        return attaches;
+    }
+
+    public void setAttaches(List<AttachVO> attaches) {
+        this.attaches = attaches;
     }
 }

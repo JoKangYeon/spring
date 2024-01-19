@@ -1,6 +1,6 @@
 vanilla (기본 javascript)
 
-jquery(만들어진 html에서 동작하는거를 쉽게 할 수 있도록 하는 프레임워크)
+jquery(만들어진 html에서 동작하는거를 쉽게 할 수 있워도록 하는 프레임워크)
 
 jquery 기초
 

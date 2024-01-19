@@ -6,6 +6,7 @@ import com.study.exception.BizNotFoundException;
 import com.study.reply.service.IReplyService;
 import com.study.reply.vo.ReplyVO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,6 +27,14 @@ public class ReplyController {
 //        System.out.println(reParentNo);
         return replyService.getReplyListByParent(paging, reCategory, reParentNo);
     }
+
+    @RequestMapping("/free/replyList")
+    public String freeReplyList(Model model, PagingVO paging, String reCategory, int reParentNo){
+        List<ReplyVO> replyList = replyService.getReplyListByParent(paging, reCategory, reParentNo);
+        model.addAttribute("replyList", replyList);
+        return "free/replyList";
+    }
+
 
     @ResponseBody
     @RequestMapping("/reply/replyRegist")

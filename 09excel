@@ -1,0 +1,16 @@
+Excel
+
+아파치의 poi 라이브러리
+2007이전 xls        POI
+2007이후 xlsx.      POI-OOXML
+
+엑셀
+WorkBook (엑셀파일)
+sheet (밑에 탭 생기는거)
+row(1행)
+cell(한칸)
+
+
+웹에서 Http요청을 통해
+1. 엑셀다운 버튼 클릭 (a태그) -> 거기에 맞는 RequestMapping 메소드 작성
+2. 메소드 작성할 때 엑셀파일 만들고, response에 '엑셀파일다운하도록' 설정

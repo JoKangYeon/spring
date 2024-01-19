@@ -80,6 +80,9 @@
     </div>
     <!-- END : 목록건수 및 새글쓰기 버튼  -->
 
+    <a href="/excel/freeList" target="_blank" id="excelDown">
+        <button class="btn-info">엑셀다운</button>
+    </a>
 
     <div class="page-header">
         <h3>자유게시판 - <small>글 목록</small></h3>
